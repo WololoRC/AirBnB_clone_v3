@@ -56,18 +56,18 @@ def get_by_id(state_id):
 
     if request.method == 'PUT':
         obj = storage.get(State, state_id)
-        if obj is not None:
-            try:
-                update_data = request.get_json()
-                update_data.pop("created_at", None)
-                update_data.pop("updated_at", None)
-                update_data.pop("id", None)
-                obj.__dict__.update(update_data)
-                obj.save()
-                return jsonify(obj.to_dict()), 200
-
-            except Exception:
-                return 'Not a JSON\n', 400
-        else:
+        if not obj:
             abort(404)
+        try:
+            update_data = request.get_json()
+            update_data.pop("created_at", None)
+            update_data.pop("updated_at", None)
+            update_data.pop("id", None)
+            for key, value in update_data.items():
+                setattr(obj, key, value)
+            obj.save()
+            return jsonify(obj.to_dict()), 200
+
+        except Exception:
+            return 'Not a JSON\n', 400
 
