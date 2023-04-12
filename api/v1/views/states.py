@@ -7,6 +7,7 @@ from models import storage
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
+    """returns the list of all State objects"""
     a_list = []
 
     for key, value in storage.all(State).items():
@@ -16,6 +17,7 @@ def get_states():
 
 @app_views.route('/states/<state_id>', methods=['GET', 'DELETE'], strict_slashes=False)
 def get_by_id(state_id):
+    """returns a State object when provided the id"""
     if request.method == 'GET':
         try:
             return jsonify(storage.get(State, state_id).to_dict())
