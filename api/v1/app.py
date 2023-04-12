@@ -27,4 +27,4 @@ def err_handler(error):
 
 
 if __name__ == "__main__":
-    app.run(host=a_host, port=a_port, threaded=True, debug=True)
+    app.run(host=a_host, port=a_port, threaded=True)
