@@ -5,19 +5,41 @@ from models.state import State
 from api.v1.views import app_views
 from models import storage
 
-@app_views.route('/states', methods=['GET'], strict_slashes=False)
+@app_views.route('/states', methods=['GET', 'POST'], strict_slashes=False)
 def get_states():
-    """returns the list of all State objects"""
-    a_list = []
+    """
+    Method : GET
+        returns the list of all State objects
 
-    for key, value in storage.all(State).items():
-        a_list.append(value.to_dict())
+    Method : POST
+        create new State
+    """
+    if request.method == 'GET':
+        a_list = []
 
-    return jsonify(a_list)
+        for key, value in storage.all(State).items():
+            a_list.append(value.to_dict())
+
+        return jsonify(a_list)
+
+    if request.method == 'POST':
+        if not request.json or not 'name' in request.json:
+            abort(404)
+        else:
+            new_state = State()
+            new_state.name = request.get_json().get('name')
+            new_state.save()
+            return jsonify(new_state.to_dict()), 201
 
 @app_views.route('/states/<state_id>', methods=['GET', 'DELETE'], strict_slashes=False)
 def get_by_id(state_id):
-    """returns a State object when provided the id"""
+    """
+    Method : GET
+        returns a State object with provided the id.
+
+    Method : DELETE
+        deletes a state
+    """
     if request.method == 'GET':
         try:
             return jsonify(storage.get(State, state_id).to_dict())
