@@ -15,7 +15,7 @@ def get_states():
 
     return jsonify(a_list)
 
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def get_by_id(state_id):
     """returns a State object when provided the id"""
     if request.method == 'GET':
@@ -31,3 +31,19 @@ def get_by_id(state_id):
             storage.delete(obj)
             storage.save()
             return jsonify({}), 200
+    if request.method == 'PUT':
+        obj = storage.get(State, state_id)
+        if obj is not None:
+            update_data = request.get_json()
+            if type(update_data) == dict:
+                raise Exception("Not a Json", 400)
+            else:
+                update_data.pop("created_at", None)
+                update_data.pop("updated_at", None)
+                update_data.pop("id", None)
+                obj.__dict__.update(update_data)
+                storage.save()
+                return jsonify(obj.to_dict()), 200
+        else:
+            abort(404)
+
