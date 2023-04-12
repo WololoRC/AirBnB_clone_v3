@@ -23,8 +23,10 @@ def get_states():
         return jsonify(a_list)
 
     if request.method == 'POST':
-        if not request.json or not 'name' in request.json:
-            abort(404)
+        if not request.json:
+            return 'Not a JSON\n', 400
+        elif not 'name' in request.json:
+            return 'Missing name\n', 400
         else:
             new_state = State()
             new_state.name = request.get_json().get('name')
