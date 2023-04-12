@@ -20,4 +20,3 @@ def get_by_id(state_id):
         return jsonify(storage.get(State, state_id).to_dict())
     except Exception:
         abort(404)
-
