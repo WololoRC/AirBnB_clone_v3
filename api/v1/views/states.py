@@ -5,6 +5,7 @@ from models.state import State
 from api.v1.views import app_views
 from models import storage
 
+
 @app_views.route('/states', methods=['GET', 'POST'], strict_slashes=False)
 def get_states():
     """
@@ -25,7 +26,7 @@ def get_states():
     if request.method == 'POST':
         if not request.json:
             return 'Not a JSON\n', 400
-        elif not 'name' in request.json:
+        elif 'name' not in request.json:
             return 'Missing name\n', 400
         else:
             new_state = State()
@@ -33,7 +34,9 @@ def get_states():
             new_state.save()
             return jsonify(new_state.to_dict()), 201
 
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>',
+                 methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def get_by_id(state_id):
     """
     Method : GET
@@ -75,4 +78,3 @@ def get_by_id(state_id):
 
         except Exception:
             return 'Not a JSON\n', 400
-
