@@ -39,6 +39,9 @@ def get_by_id(state_id):
 
     Method : DELETE
         deletes a state
+
+    Method : PUT
+        updates a state
     """
     if request.method == 'GET':
         try:
