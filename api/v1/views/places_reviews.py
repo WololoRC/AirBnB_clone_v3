@@ -30,7 +30,7 @@ def get_reviews(place_id):
     if request.method == 'POST':
         if not request.json:
             return 'Not a JSON\n', 400
-        if 'tetx' not in request.json:
+        if 'text' not in request.json:
             return 'Missing text\n', 400
         if 'user_id' not in request.json:
             return 'Missing user_id\n', 400
@@ -39,9 +39,9 @@ def get_reviews(place_id):
             abort(404)
         else:
             new_review = Review()
-            new_review.text = request.get_json().get('text')
             new_review.place_id = place_id
             new_review.user_id = request.get_json().get('user_id')
+            new_review.text = request.get_json().get('text')
             new_review.save()
             return jsonify(new_review.to_dict()), 201
 
