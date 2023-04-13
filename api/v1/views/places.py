@@ -5,7 +5,7 @@ from api.v1.views import app_views
 from models import storage
 from models.place import Place
 from models.city import City
-
+from models.user import User
 
 @app_views.route('/cities/<city_id>/places',
                  methods=['GET', 'POST'], strict_slashes=False)
@@ -29,14 +29,19 @@ def get_places(city_id):
     if request.method == 'POST':
         if not request.json:
             return 'Not a JSON\n', 400
-        elif 'name' not in request.json:
+        if 'name' not in request.json:
             return 'Missing name\n', 400
-        elif 'user_id' not in request.json:
+        if 'user_id' not in request.json:
             return 'Missing user_id\n', 400
+        usr_obj = storage.get(User, request.get_json().get('user_id'))
+        if not usr_obj:
+            abort(404)
         else:
+
             new_place = Place()
             new_place.name = request.get_json().get('name')
             new_place.city_id = city_id
+
             new_place.user_id = request.get_json().get('user_id')
             new_place.save()
             return jsonify(new_place.to_dict()), 201
@@ -73,6 +78,7 @@ def get_places_by_id(place_id):
             update_data.pop("created_at", None)
             update_data.pop("updated_at", None)
             update_data.pop("id", None)
+            update_data.pop("user_id", None)
             for key, value in update_data.items():
                 setattr(obj, key, value)
             obj.save()
