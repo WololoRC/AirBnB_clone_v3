@@ -5,11 +5,11 @@ from api.v1.views import app_views
 from models import storage
 from models.place import Place
 from models.city import City
-
+from models.state import State
 
 @app_views.route('/cities/<city_id>/places',
                  methods=['GET', 'POST'], strict_slashes=False)
-def get_places(city_id):
+def get_places(state_id, city_id):
     """
     Method : GET
         returns the list of all Place objects linked of a State
@@ -18,7 +18,8 @@ def get_places(city_id):
         creates a new Place
     """
     obj = storage.get(City, city_id)
-    if not obj:
+    state_obj = storage.get(State, state_id)
+    if not obj or state_obj:
         abort(404)
 
     if request.method == 'GET':
