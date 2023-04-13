@@ -4,13 +4,13 @@ from flask import jsonify, abort, Blueprint, request
 from api.v1.views import app_views
 from models import storage
 from models.place import Place
-from model.review import Review
-from model.user import User
+from models.review import Review
+from models.user import User
 
 
 @app_views.route('/places/<place_id>/reviews',
                  methods=['GET', 'POST'], strict_slashes=False)
-def get_cities(place_id):
+def get_reviews(place_id):
     """
     Method : GET
         returns the list of all Review objects of a Place
