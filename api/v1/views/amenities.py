@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""API states module"""
+"""API amenities module"""
 from flask import jsonify, abort, Blueprint, request
 from models.amenity import Amenity
 from api.v1.views import app_views
