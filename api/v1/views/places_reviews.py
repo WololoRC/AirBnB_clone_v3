@@ -40,7 +40,7 @@ def get_reviews(place_id):
         else:
             new_review = Review()
             new_review.text = request.get_json().get('text')
-            new_review.place = place_id
+            new_review.place_id = place_id
             new_review.user_id = request.get_json().get('user_id')
             new_review.save()
             return jsonify(new_review.to_dict()), 201
