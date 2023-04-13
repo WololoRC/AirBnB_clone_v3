@@ -3,7 +3,7 @@
 from flask import jsonify, abort, Blueprint, request
 from api.v1.views import app_views
 from models import storage
-from models.places import Place
+from models.place import Place
 from models.city import City
 
 
