@@ -18,7 +18,7 @@ def get_places(city_id):
         creates a new Place
     """
     obj = storage.get(City, city_id)
-    if not obj or obj.state_id:
+    if not obj:
         abort(404)
 
     if request.method == 'GET':
