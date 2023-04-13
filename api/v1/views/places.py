@@ -31,17 +31,20 @@ def get_places(city_id):
             return 'Not a JSON\n', 400
         elif 'name' not in request.json:
             return 'Missing name\n', 400
+        elif 'user_id' not in request.json:
+            return 'Missing user_id\n', 400
         else:
             new_place = Place()
             new_place.name = request.get_json().get('name')
             new_place.city_id = city_id
+            new_place.user_id = request.get_json().get('user_id')
             new_place.save()
             return jsonify(new_place.to_dict()), 201
 
 
 @app_views.route('/places/<place_id>',
                  methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
-def get_places_by_id(city_id):
+def get_places_by_id(place_id):
     """
     Method : GET
         returns a Place object with provided the id.
